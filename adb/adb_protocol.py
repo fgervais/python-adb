@@ -187,7 +187,7 @@ class AdbMessage(object):
     if isinstance(data, bytearray):
         total = sum(data)
     elif isinstance(data, bytes):
-        total = sum(map(ord, data.decode('ascii')))
+        total = sum(data)
     else:
         total = sum(map(ord, data))
     return total & 0xFFFFFFFF
@@ -292,7 +292,7 @@ class AdbMessage(object):
           raise InvalidResponseError(
               'Unknown AUTH response: %s %s %s' % (arg0, arg1, banner))
 
-        signed_token = rsa_key.Sign(str(banner))
+        signed_token = rsa_key.Sign(banner)
         msg = cls(
             command=b'AUTH', arg0=AUTH_SIGNATURE, arg1=0, data=signed_token)
         msg.Send(usb)
